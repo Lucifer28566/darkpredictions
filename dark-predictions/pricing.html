@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pricing — Dark Predictions</title>
+<meta name="description" content="Dark Predictions pricing: Basic £20, Gold £40, VIP £100 per month. No commitment, cancel anytime." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css?v=1787080896" />
+<style>
+  .compare{max-width:880px;margin:0 auto;border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden}
+  .compare table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .compare th,.compare td{padding:16px 18px;text-align:center;border-bottom:1px solid var(--line-soft)}
+  .compare th{font-family:'Sora';font-weight:700;background:var(--panel)}
+  .compare td:first-child,.compare th:first-child{text-align:left;color:var(--muted)}
+  .compare th.gold{color:var(--gold)}
+  .compare tr:last-child td{border-bottom:0}
+  .compare .yes{color:var(--good);font-weight:700}
+  .compare .no{color:var(--dim)}
+</style>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<div class="email-topbar">Questions? Email me direct: <a href="mailto:offgridsecrets@gmail.com">offgridsecrets@gmail.com</a></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html" aria-current="page">Pricing</a>
+      <a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a>
+
+      <a href="apps.html">Apps</a>
+
+      <a href="wall.html">The Wall</a>
+
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-area" class="auth-area"></span>
+      <a class="btn btn-gold btn-sm pulse" href="#plans">Subscribe</a>
+      <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero wrap reveal in">
+    <span class="eyebrow">Pricing</span>
+    <h1>Simple plans. <span class="gold-text">Premium</span> content.</h1>
+    <p>One price, everything included for your tier. No hidden fees, no contracts — cancel anytime. <b class="gold-text">50% off if you subscribe before August 31.</b></p>
+    <div id="checkoutNotice" style="display:none;margin-top:18px;padding:14px 18px;border-radius:var(--r);font-size:14.5px"></div>
+    <div id="billingPortalArea" style="margin-top:14px"></div>
+  </section>
+
+  <section id="plans" style="padding-top:30px">
+    <div class="wrap">
+      <div class="promo-banner reveal in">
+        <span class="promo-tag">−50% launch offer</span>
+        <span class="promo-text">Subscribe before <b>August 31</b> and lock in half price, every month, for as long as you stay subscribed.</span>
+      </div>
+      <div class="pricing">
+        <div class="plan reveal">
+          <div class="tier">Dark Predictions Basic</div>
+          <div class="price"><span class="price-old">£40</span><span class="price-new">£20</span><span> /month</span></div>
+          <p class="tagline">The essentials to follow along.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly uncensored Dark Predictions videos</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>All my music, free to download</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>50% off personal predictions</li>
+          </ul>
+          <a class="btn btn-ghost" href="REPLACE_BASIC_STRIPE_LINK" target="_blank" rel="noopener">Get Basic</a>
+        </div>
+        <div class="plan featured reveal d1">
+          <span class="badge">Most popular</span>
+          <div class="tier">Dark Predictions Gold</div>
+          <div class="price"><span class="price-old">£80</span><span class="price-new">£40</span><span> /month</span></div>
+          <p class="tagline">The best balance of volume and depth.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Basic</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly crypto &amp; stock predictions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Free access to my apps</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Early access to new music</li>
+          </ul>
+          <a class="btn btn-gold" href="REPLACE_GOLD_STRIPE_LINK" target="_blank" rel="noopener">Get Gold</a>
+        </div>
+        <div class="plan reveal d2">
+          <div class="tier">Dark Predictions VIP</div>
+          <div class="price"><span class="price-old">£200</span><span class="price-new">£100</span><span> /month</span></div>
+          <p class="tagline">Full, priority, personal access.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Basic &amp; Gold</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Private messaging with me</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Gold &amp; silver predictions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Extra crypto &amp; stock predictions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Your name or business featured in a future video</li>
+          </ul>
+          <a class="btn btn-ghost" href="REPLACE_VIP_STRIPE_LINK" target="_blank" rel="noopener">Get VIP</a>
+        </div>
+        <div class="plan reveal d3" style="border-color:var(--gold);position:relative">
+          <span class="badge" style="background:var(--gold);color:#0c0c10">Lifetime deal</span>
+          <div class="tier">Dark Predictions VIP Lifetime</div>
+          <div class="price"><span class="price-new">£3690</span><span> once</span></div>
+          <p class="tagline">Pay once, VIP access forever. No monthly bills, ever.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in VIP, permanently</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>One-time payment — no subscription</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Locked-in access to all future content</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Priority private messaging</li>
+          </ul>
+          <a class="btn btn-gold" href="https://buy.stripe.com/bJeaEXeE2aem7wsbfk3sI00" target="_blank" rel="noopener">Get VIP Lifetime</a>
+        </div>
+      </div>
+      <p class="plan-note">🔒 All payments are securely processed by Stripe. Cancel anytime from your billing portal.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">Compare</span><h2>What's in each plan</h2></div>
+      <div class="compare reveal">
+        <table>
+          <thead><tr><th>Feature</th><th>Basic</th><th class="gold">Gold</th><th>VIP</th></tr></thead>
+          <tbody>
+            <tr><td>Monthly uncensored predictions videos</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Music — free downloads</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>50% off personal predictions</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Monthly crypto &amp; stock predictions</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Free access to apps</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Early access to new music</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Private messaging with me</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Gold &amp; silver predictions</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Extra crypto &amp; stock predictions</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Your name/business in a future video</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">Billing</span><h2>Good to know</h2></div>
+      <div class="faq">
+        <details class="reveal"><summary>Can I cancel anytime?<span class="plus"></span></summary><div class="ans">Yes. Every plan is month-to-month with no contract. Manage or cancel from your Stripe billing portal — access stays active until the end of your paid period.</div></details>
+        <details class="reveal"><summary>Can I switch plans later?<span class="plus"></span></summary><div class="ans">Absolutely. Upgrade or downgrade whenever you want. Many members start on Basic and move up once they see the content.</div></details>
+        <details class="reveal"><summary>Is my payment secure?<span class="plus"></span></summary><div class="ans">Yes. Checkout is handled entirely by Stripe. Your card details never touch this website.</div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+  <section style="padding:48px 0 24px">
+    <div class="wrap" style="text-align:center">
+      <span class="eyebrow">One-on-one</span>
+      <h2 style="margin:8px 0 8px">Want a personal prediction?</h2>
+      <p style="color:var(--muted);max-width:560px;margin:0 auto">Get a private prediction made just for you — open to everyone, no account needed.
+      Members save: <b style="color:var(--gold)">Basic 20% · Gold 30% · VIP 50% off</b></p>
+      <a class="btn btn-gold" href="personal-predictions.html" style="margin-top:16px">See personal predictions &amp; pricing</a>
+    </div>
+  </section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+        <p>A premium creator hub — predictions, music, apps and original paintings, all in one place.</p>
+      </div>
+      <div class="foot-col"><h5>Explore</h5><a href="pricing.html">Pricing</a><a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="music.html">Music</a><a href="apps.html">Apps</a><a href="wall.html">The Wall</a><a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a></div>
+      <div class="foot-col"><h5>Plans</h5><a href="pricing.html">Basic — £20/mo</a><a href="pricing.html">Gold — £40/mo</a><a href="pricing.html">VIP — £100/mo</a></div>
+    </div>
+    <div class="disclaimer">
+      All content on this site is original creative work shared for entertainment and informational purposes. Predictions are personal opinion and do not constitute professional, financial, or any other type of advice.
+      <br><br>© <span id="year">2026</span> Dark Predictions. All rights reserved. Payments secured by Stripe.
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/local-api.js?v=1787080896"></script>
+<script src="/assets/js/analytics.js?v=1787080896"></script>
+<script src="/assets/js/main.js?v=1787080896"></script>
+<script src="/assets/js/auth.js?v=1787080896"></script>
+<script src="/assets/js/checkout.js?v=1787080896"></script>
+</body>
+</html>

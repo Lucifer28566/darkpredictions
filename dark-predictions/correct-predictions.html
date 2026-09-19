@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Correct Predictions — Dark Predictions</title>
+<meta name="description" content="A track record of predictions that came true — watch the videos." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css?v=1787080896" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<div class="email-topbar">Questions? Email me direct: <a href="mailto:offgridsecrets@gmail.com">offgridsecrets@gmail.com</a></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html" aria-current="page">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a>
+      <a href="apps.html">Apps</a>
+      <a href="wall.html">The Wall</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-area" class="auth-area"></span>
+      <a class="btn btn-gold btn-sm pulse" href="pricing.html">Subscribe</a>
+      <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero wrap reveal in">
+    <span class="eyebrow">Proof, not promises</span>
+    <h1>Predictions that <span class="gold-text">came true</span></h1>
+    <p>A running track record of my calls that landed — watch the videos and judge for yourself. This is why members trust the feed.</p>
+    <a class="btn btn-gold" href="/pricing.html" style="margin-top:8px">Get the predictions</a>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="apps-grid" id="cpGrid" style="display:none"></div>
+      <div class="empty-state" id="cpEmpty" style="display:none">No videos posted yet. Check back soon!</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+        <p>A premium creator hub — predictions, music, apps and original paintings, all in one place.</p>
+      </div>
+      <div class="foot-col"><h5>Explore</h5><a href="pricing.html">Pricing</a><a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a><a href="music.html">Music</a><a href="apps.html">Apps</a><a href="wall.html">The Wall</a><a href="faq.html">FAQ</a></div>
+      <div class="foot-col"><h5>Plans</h5><a href="pricing.html">Basic — £20/mo</a><a href="pricing.html">Gold — £40/mo</a><a href="pricing.html">VIP — £100/mo</a></div>
+    </div>
+    <div class="disclaimer">
+      All content on this site is original creative work shared for entertainment and informational purposes. Predictions are personal opinion and do not constitute professional, financial, or any other type of advice.
+      <br><br>© <span id="year">2026</span> Dark Predictions. All rights reserved. Payments secured by Stripe.
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/local-api.js?v=1787080896"></script>
+<script src="/assets/js/analytics.js?v=1787080896"></script>
+<script src="/assets/js/main.js?v=1787080896"></script>
+<script src="/assets/js/auth.js?v=1787080896"></script>
+<script>
+(function () {
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function youtubeId(url) {
+    var m = String(url).match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/);
+    return m ? m[1] : null;
+  }
+  function thumbFor(item) {
+    if (item.cover) return item.cover;
+    var yt = youtubeId(item.url);
+    if (yt) return 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg';
+    return null;
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    var grid = document.getElementById('cpGrid');
+    var empty = document.getElementById('cpEmpty');
+    try {
+      var res = await fetch('/api/correctpredictions', { credentials: 'same-origin' });
+      var data = await res.json();
+      var items = (data && data.items) || [];
+      if (!items.length) { empty.style.display = ''; return; }
+      grid.style.display = '';
+      grid.innerHTML = items.map(function (item) {
+        var thumb = thumbFor(item);
+        var thumbHtml = thumb
+          ? '<img src="' + esc(thumb) + '" alt="' + esc(item.title) + '" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block" loading="lazy" />'
+          : '<div style="width:100%;aspect-ratio:16/9;display:grid;place-items:center;background:#000;color:var(--gold)"><svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>';
+        return '<a class="app-card" href="' + esc(item.url) + '" target="_blank" rel="noopener" style="overflow:hidden;text-decoration:none;display:block">' +
+          '<div style="position:relative">' + thumbHtml +
+          '<div style="position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.15)"><span style="background:rgba(0,0,0,.65);border-radius:50%;width:54px;height:54px;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></div>' +
+          '</div>' +
+          '<div style="padding:16px 18px">' +
+          '<div style="font-family:\'Sora\',sans-serif;font-weight:600;color:var(--text);font-size:15px;line-height:1.4">' + esc(item.title) + '</div>' +
+          (item.description ? '<p style="color:var(--muted);font-size:13px;margin:8px 0 0;line-height:1.5">' + esc(item.description) + '</p>' : '') +
+          '</div></a>';
+      }).join('');
+    } catch (e) {
+      console.error('Correct predictions load error:', e);
+      empty.style.display = '';
+    }
+  });
+})();
+</script>
+</body>
+</html>

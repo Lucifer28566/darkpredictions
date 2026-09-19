@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apps — Dark Predictions</title>
+<meta name="description" content="Applications built by Dark Predictions." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css?v=1787080896" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<div class="email-topbar">Questions? Email me direct: <a href="mailto:offgridsecrets@gmail.com">offgridsecrets@gmail.com</a></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a>
+
+      <a href="apps.html" aria-current="page">Apps</a>
+
+      <a href="wall.html">The Wall</a>
+
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-area" class="auth-area"></span>
+      <a class="btn btn-gold btn-sm pulse" href="pricing.html">Subscribe</a>
+      <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero wrap reveal in">
+    <span class="eyebrow">Built by me</span>
+    <h1>The <span class="gold-text">apps</span> I make</h1>
+    <p>These are some of my ongoing projects, with your membership these projects will get development funding.</p>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="apps-grid" id="appsGrid" style="display:none"></div>
+      <div class="empty-state" id="appsEmpty" style="display:none">No apps have been posted yet. Check back soon!</div>
+      <div class="empty-state" id="appsGate" style="display:none;text-align:center;padding:48px 24px">
+        <h2 style="font-family:'Sora',sans-serif;margin:0 0 12px">Subscribers only</h2>
+        <p style="color:var(--muted);margin:0 0 24px">Access to the apps is included with every paid plan, starting at Basic.</p>
+        <a class="btn btn-gold" href="/pricing.html">See plans</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+        <p>A premium creator hub — predictions, music, apps and original paintings, all in one place.</p>
+      </div>
+      <div class="foot-col"><h5>Explore</h5><a href="pricing.html">Pricing</a><a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a><a href="apps.html">Apps</a><a href="wall.html">The Wall</a><a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a></div>
+      <div class="foot-col"><h5>Plans</h5><a href="pricing.html">Basic — £20/mo</a><a href="pricing.html">Gold — £40/mo</a><a href="pricing.html">VIP — £100/mo</a></div>
+    </div>
+    <div class="disclaimer">
+      All content on this site is original creative work shared for entertainment and informational purposes. Predictions are personal opinion and do not constitute professional, financial, or any other type of advice.
+      <br><br>© <span id="year">2026</span> Dark Predictions. All rights reserved. Payments secured by Stripe.
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/local-api.js?v=1787080896"></script>
+<script src="/assets/js/analytics.js?v=1787080896"></script>
+<script src="/assets/js/main.js?v=1787080896"></script>
+<script src="/assets/js/auth.js?v=1787080896"></script>
+<script src="/assets/js/content.js?v=1787080896"></script>
+<script>document.addEventListener('DOMContentLoaded', async function(){
+  const PAID = ['trial','basic','gold','vip','developer'];
+  const user = (window.DP && window.DP.getMe) ? await window.DP.getMe() : null;
+  if(user && PAID.indexOf(user.role) !== -1){
+    document.getElementById('appsGrid').style.display = '';
+    window.DPContent.renderMedia('apps', '#appsGrid', '#appsEmpty');
+  } else {
+    document.getElementById('appsGate').style.display = '';
+  }
+});</script>
+</body>
+</html>
