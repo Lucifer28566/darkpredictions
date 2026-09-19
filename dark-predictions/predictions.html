@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Predictions — Dark Predictions</title>
+<meta name="description" content="Members-only predictions, refreshed continuously. Subscribe to unlock everything." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css?v=1787080896" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<div class="email-topbar">Questions? Email me direct: <a href="mailto:offgridsecrets@gmail.com">offgridsecrets@gmail.com</a></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="predictions.html" aria-current="page">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a>
+
+      <a href="apps.html">Apps</a>
+
+      <a href="wall.html">The Wall</a>
+
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-area" class="auth-area"></span>
+      <a class="btn btn-gold btn-sm pulse" href="pricing.html">Subscribe</a>
+      <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero wrap reveal in">
+    <span class="eyebrow">Latest predictions</span>
+    <h1>The <span class="gold-text">predictions</span> feed</h1>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="pred-controls" id="predControls" style="display:none">
+        <div class="pred-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="predSearch" placeholder="Search predictions…" autocomplete="off" />
+          <button type="button" id="predSearchClear" aria-label="Clear search" style="display:none">&times;</button>
+        </div>
+        <div class="pred-filters" id="predFilters">
+          <button type="button" class="pred-filter active" data-filter="all">All</button>
+          <button type="button" class="pred-filter" data-filter="crypto">Crypto</button>
+          <button type="button" class="pred-filter" data-filter="stocks">Stocks</button>
+          <button type="button" class="pred-filter" data-filter="goldsilver">Gold &amp; Silver</button>
+          <button type="button" class="pred-filter" data-filter="oil">Oil</button>
+          <button type="button" class="pred-filter" data-filter="other">Other</button>
+        </div>
+      </div>
+      <div class="feed" id="predFeed"></div>
+      <div class="pred-noresults" id="predNoResults" style="display:none;text-align:center;padding:48px 24px;color:var(--muted)">
+        No predictions match your search.
+      </div>
+      <div class="empty-state" id="predFeedEmpty" style="display:none;text-align:center;padding:48px 24px">
+        <h2 style="font-family:'Sora',sans-serif;margin:0 0 12px">Subscribers only</h2>
+        <p style="color:var(--muted);margin:0 0 24px">The predictions feed is included with every paid plan, starting at Basic.</p>
+        <a class="btn btn-gold" href="/pricing.html">See plans</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap reveal">
+      <div class="cta-box">
+        <span class="eyebrow">Don't miss anything</span>
+        <h2>Unlock every prediction</h2>
+        <p>Get full access to all predictions, photos, videos and bonus content.</p>
+        <div class="row">
+          <a class="btn btn-gold pulse" href="pricing.html">View plans</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img id="lightboxImg" alt="" />
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+        <p>A premium creator hub — predictions, music, apps and original paintings, all in one place.</p>
+      </div>
+      <div class="foot-col"><h5>Explore</h5><a href="pricing.html">Pricing</a><a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a><a href="apps.html">Apps</a><a href="wall.html">The Wall</a><a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a></div>
+      <div class="foot-col"><h5>Plans</h5><a href="pricing.html">Basic — £20/mo</a><a href="pricing.html">Gold — £40/mo</a><a href="pricing.html">VIP — £100/mo</a></div>
+    </div>
+    <div class="disclaimer">
+      All content on this site is original creative work shared for entertainment and informational purposes. Predictions are personal opinion and do not constitute professional, financial, or any other type of advice.
+      <br><br>© <span id="year">2026</span> Dark Predictions. All rights reserved. Payments secured by Stripe.
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/local-api.js?v=1787080896"></script>
+<script src="/assets/js/analytics.js?v=1787080896"></script>
+<script src="/assets/js/main.js?v=1787080896"></script>
+<script src="/assets/js/auth.js?v=1787080896"></script>
+<script src="/assets/js/predictions.js?v=1787080896"></script>
+</body>
+</html>
