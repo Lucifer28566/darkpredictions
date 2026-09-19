@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Wall — Dark Predictions</title>
+<meta name="description" content="Comments, reviews and suggestions from the Dark Predictions community." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css?v=1787080896" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<div class="email-topbar">Questions? Email me direct: <a href="mailto:offgridsecrets@gmail.com">offgridsecrets@gmail.com</a></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a>
+      <a href="apps.html">Apps</a>
+      <a href="wall.html" aria-current="page">The Wall</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-area" class="auth-area"></span>
+      <a class="btn btn-gold btn-sm pulse" href="pricing.html">Subscribe</a>
+      <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" style="padding:60px 0 100px">
+    <div class="page-hero reveal in" style="text-align:left;padding:0 0 30px">
+      <span class="eyebrow">Community</span>
+      <h1 style="font-size:clamp(32px,4.6vw,52px)">The <span class="gold-text">Wall</span></h1>
+      <p style="margin-left:0">Leave a comment, a review, or a suggestion. Everyone can read the wall — posting is open to Basic, Gold and VIP members.</p>
+    </div>
+
+    <!-- Composer — shown only to basic/gold/vip/developer -->
+    <div class="wall-compose" id="wallCompose" style="display:none">
+      <h3>Post something</h3>
+      <p class="form-hint" style="margin-top:2px">Be respectful — posts can be removed by the site admin.</p>
+      <div class="wall-type-row" id="wallTypeRow">
+        <button type="button" class="wall-type-btn active" data-type="Comment">Comment</button>
+        <button type="button" class="wall-type-btn" data-type="Review">Review</button>
+        <button type="button" class="wall-type-btn" data-type="Suggestion">Suggestion</button>
+      </div>
+      <form id="wallForm">
+        <textarea id="wallInput" rows="3" placeholder="Write your comment, review or suggestion…" required maxlength="2000" style="width:100%;background:var(--bg-2);border:1px solid var(--line-soft);border-radius:14px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;resize:vertical"></textarea>
+        <div style="display:flex;gap:12px;margin-top:14px;align-items:center">
+          <button type="submit" class="btn btn-gold">Post to the Wall</button>
+          <span class="form-msg" id="wallFormMsg" style="margin:0"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Gate — shown to signed-out visitors or free-tier accounts -->
+    <div class="vip-guard" id="wallGuard" style="display:none;margin:0 0 28px">
+      <div>
+        <span class="eyebrow">Members only</span>
+        <h2 style="margin-top:14px;font-family:'Sora',sans-serif;font-weight:800;font-size:24px">Posting is for Basic, Gold and VIP members</h2>
+        <p style="color:var(--muted);margin-top:10px" id="wallGuardMsg">Anyone can read the Wall below. Sign in with a Basic account or higher to post.</p>
+        <a href="pricing.html" class="btn btn-gold" style="margin-top:20px">See plans</a>
+      </div>
+    </div>
+
+    <div class="wall-list" id="wallList"></div>
+    <div class="wall-empty" id="wallEmpty" style="display:none">No posts yet. Be the first to write on the Wall!</div>
+    <div class="wall-empty" id="wallLoading">Loading the Wall…</div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="index.html">Dark<b>Predictions</b></a>
+        <p>A premium creator hub — predictions, music, apps and original paintings, all in one place.</p>
+      </div>
+      <div class="foot-col"><h5>Explore</h5><a href="pricing.html">Pricing</a><a href="predictions.html">Predictions</a>
+      <a href="correct-predictions.html">Track Record</a>
+      <a href="personal-predictions.html">Personal Predictions</a>
+      <a href="music.html">Music</a><a href="apps.html">Apps</a><a href="wall.html">The Wall</a><a href="faq.html">FAQ</a>
+      <a href="contact.html">Message</a></div>
+      <div class="foot-col"><h5>Plans</h5><a href="pricing.html">Basic — £20/mo</a><a href="pricing.html">Gold — £40/mo</a><a href="pricing.html">VIP — £100/mo</a></div>
+    </div>
+    <div class="disclaimer">
+      All content on this site is original creative work shared for entertainment and informational purposes. Predictions are personal opinion and do not constitute professional, financial, or any other type of advice.
+      <br><br>© <span id="year">2026</span> Dark Predictions. All rights reserved. Payments secured by Stripe.
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/local-api.js?v=1787080896"></script>
+<script src="/assets/js/analytics.js?v=1787080896"></script>
+<script src="/assets/js/main.js?v=1787080896"></script>
+<script src="/assets/js/auth.js?v=1787080896"></script>
+<script src="/assets/js/wall.js?v=1787080896"></script>
+</body>
+</html>

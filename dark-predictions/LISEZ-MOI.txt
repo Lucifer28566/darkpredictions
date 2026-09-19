@@ -1,0 +1,132 @@
+DARK PREDICTIONS — HUB CRÉATEUR
+================================
+
+Site statique connecté à Firebase (Firestore + Auth + Storage +
+Cloud Functions). Aucun contenu en lien avec les paris sportifs.
+
+⚠️ AVANT TOUTE MISE EN LIGNE : voir firebase-backend/GUIDE-DEPLOIEMENT.md
+Ce fichier explique pas à pas comment déployer les règles de sécurité,
+les Cloud Functions (paiement Stripe) et le site lui-même.
+
+PAGES PUBLIQUES
+---------------
+- index.html      → page d'accueil (prédictions, art, musique, apps)
+- pricing.html    → comparatif des 3 plans payants (Basic / Gold / VIP)
+- predictions.html → fil des prédictions (verrouillées selon le plan)
+- music.html      → musique originale (écoute + téléchargement)
+- apps.html       → applications
+- paintings.html  → peintures
+- faq.html        → questions fréquentes
+- contact.html    → messagerie privée RÉSERVÉE aux VIP
+- login.html / signup.html
+- admin.html      → panneau d'administration (compte developer uniquement)
+
+PLANS ET AVANTAGES
+-------------------
+  - Basic  $20 / mois → vidéos mensuelles de prédictions non censurées,
+                        toute la musique en téléchargement gratuit,
+                        assistance par e-mail.
+  - Gold   $40 / mois → tout Basic + prédictions mensuelles crypto/actions,
+                        accès gratuit aux apps, accès anticipé à la musique.
+  - VIP   $100 / mois → tout Basic + Gold + messagerie privée, prédictions
+                        or/argent, prédictions crypto/actions supplémentaires,
+                        nom/entreprise dans une future vidéo.
+
+Quand quelqu'un s'inscrit, son rôle est "free" par défaut (musique,
+apps et peintures restent visibles). Pour voir les prédictions et
+écrire en VIP, il faut le rôle basic / gold / vip — obtenu
+AUTOMATIQUEMENT après un paiement Stripe réussi (voir plus bas).
+
+LE TOUT PREMIER COMPTE qui s'inscrit reçoit automatiquement le rôle
+"developer" (admin). Crée-le toi-même avant d'annoncer le site.
+Tu peux ensuite changer le rôle des autres comptes depuis
+admin.html → onglet Users.
+
+PAIEMENT STRIPE ↔ COMPTES (système automatique)
+-------------------------------------------------
+Le visiteur doit créer un compte ou se connecter AVANT de payer
+(impossible de payer sans compte). Une fois connecté, le bouton
+"Get Basic/Gold/VIP" déclenche une vraie session de paiement Stripe
+liée à son compte. Quand Stripe confirme le paiement, une Cloud
+Function (webhook) met à jour automatiquement le rôle de l'utilisateur
+en quelques secondes — aucune action manuelle nécessaire.
+
+Le suivi des paiements (montant, date, plan) est conservé dans
+Firestore sous users/{uid}/payments. Un membre payant peut gérer ou
+annuler son abonnement lui-même depuis pricing.html ("Gérer mon
+abonnement"), via le portail de facturation Stripe.
+
+⚠️ Avant le premier déploiement, il manque encore : les Price ID
+Stripe et l'URL des Cloud Functions, à renseigner dans 3 fichiers —
+voir le tableau récapitulatif dans GUIDE-DEPLOIEMENT.md.
+
+UPLOAD DE FICHIERS (plus de liens externes)
+---------------------------------------------
+- Prédictions : photo et/ou vidéo (10 minutes MAXIMUM) uploadées
+  directement depuis l'admin, stockées sur Firebase Storage.
+- Musique : fichier audio (MP3, WAV…) uploadé et nommé depuis l'admin.
+  Les visiteurs peuvent écouter ET télécharger chaque morceau.
+- Apps : toujours un lien vers le site de l'app (c'est voulu — l'app
+  elle-même n'est pas hébergée ici), avec capture d'écran optionnelle
+  en upload.
+- Peintures : toujours par URL d'image pour l'instant.
+
+COMMENT PUBLIER DES MÉDIAS (admin.html)
+---------------------------------------
+Onglet Music     : titre, tag, description, fichier audio (upload),
+                   cover (upload, optionnel).
+Onglet Apps      : nom, plateforme, description, URL de l'app,
+                   screenshot (optionnel).
+Onglet Paintings : titre, tag, description, URL de l'image (jpg/png/webp).
+                   Les peintures s'affichent dans une grille avec lightbox.
+
+COMMENT PUBLIER DES PRÉDICTIONS
+-------------------------------
+Onglet Predictions du panneau admin :
+- Catégorie (champ libre : Trends, Insights, Forecasts…)
+- Plan d'accès : basic, gold ou vip (le plus haut voit aussi les niveaux inférieurs)
+- Titre, prédiction (texte libre, multi-ligne)
+- Photo (upload, optionnel) → s'affiche dans la carte
+- Vidéo (upload, 10 min max, optionnel) → s'affiche en lecteur intégré
+- Tag (optionnel) : "High confidence", "Personal opinion", etc.
+
+MESSAGES VIP
+------------
+- contact.html : si un visiteur n'est pas connecté, il est invité à se connecter.
+  S'il est connecté mais pas VIP, il est invité à passer à VIP.
+  S'il est VIP, il voit un formulaire pour t'écrire et l'historique de ses messages.
+- admin.html → VIP Messages : tu vois TOUS les messages reçus, clic sur
+  une ligne pour ouvrir le message en plein.
+
+STATISTIQUES DE TRAFIC (admin.html → onglet Analytics)
+---------------------------------------------------------
+Chaque visite publique (jamais l'admin lui-même) est enregistrée :
+page vue, durée passée, pays/ville approximatif, type d'appareil,
+provenance. L'onglet Analytics affiche : vues totales, visiteurs
+uniques, durée moyenne, page la plus vue, et le détail par pays /
+page / appareil / provenance, avec un filtre 7 jours / 30 jours /
+depuis le début.
+
+CONFIGURATION FIREBASE
+----------------------
+Le fichier assets/js/local-api.js contient ta config Firebase
+(déjà remplie) ET l'URL des Cloud Functions (à remplir — voir
+GUIDE-DEPLOIEMENT.md).
+
+⚠️ SÉCURITÉ — DÉJÀ CORRIGÉE DANS CETTE VERSION
+------------------------------------------------
+Les anciennes règles Firestore ("tout utilisateur connecté peut tout
+lire/écrire") ont été remplacées par des règles strictes :
+voir firebase-backend/firestore.rules et storage.rules.
+Chaque rôle ne peut désormais être modifié QUE par le compte developer
+ou par les Cloud Functions (jamais directement par le navigateur d'un
+visiteur). Ces règles doivent être déployées (firebase deploy) pour
+prendre effet — tant que ce n'est pas fait, l'ancienne faille reste
+active sur le projet Firebase en ligne.
+
+DÉPLOIEMENT
+-----------
+Voir firebase-backend/GUIDE-DEPLOIEMENT.md pour la procédure complète,
+étape par étape (Price ID Stripe, secrets, déploiement des règles,
+des fonctions et du site).
+
