@@ -1,0 +1,27 @@
+DARK PREDICTIONS — Notes de déploiement
+========================================
+
+CE QUI EST DANS CE ZIP :
+- ✅ Tous les fichiers du site mis à jour (HTML / CSS / JS)
+- ✅ Nouvelles règles Firestore (firebase-backend/firestore.rules)
+- ✅ Code du Worker Cloudflare (worker-upload.js)
+
+À FAIRE APRÈS AVOIR DÉPLOYÉ LE SITE :
+
+1) METTRE À JOUR LE WORKER CLOUDFLARE (important pour le fix vidéo)
+   - Va sur ton Worker `curly-river-3102` → Edit code
+   - Remplace tout par le contenu de worker-upload.js
+   - Clique Deploy
+
+2) METTRE À JOUR LES RÈGLES FIRESTORE (pour activer les conversations VIP)
+   - Va dans la console Firebase → Firestore → Rules
+   - Remplace par le contenu de firebase-backend/firestore.rules
+   - Publie
+
+NOUVELLES FONCTIONNALITÉS :
+- VIP Chat 1-on-1 : page Contact pour les VIP, onglet "VIP Messages" dans l'admin
+- Téléchargement de chaque morceau (bouton à droite du player)
+- Album "For Those That Feel Nothing" affiché sur la page Music
+- 14 morceaux (Alive Cover retiré)
+- Upload vidéo réparé (limite 100 MB)
+- Nouveau texte Apps
